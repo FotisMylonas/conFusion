@@ -58,7 +58,13 @@
     <h2>Corporate Leadership</h2>
     <p>Display the details of the corporate leaders here</p>
     <mat-list>
-      <mat-list-item *ngFor="let leader of leaders">{{leader.name}}</mat-list-item>
+      <mat-list-item *ngFor="let leader of leaders">{{leader.name}}
+        <img matListAvatar src={{dish.image}} alt={{dish.name}}>
+        <h1 matLine> {{dish.name}} </h1>
+        <p matLine>
+          <span> {{dish.description}} </span>
+        </p>
+      </mat-list-item>  
     </mat-list>
   </div>
 </div>
