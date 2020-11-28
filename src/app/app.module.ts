@@ -11,7 +11,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@Angular/material/input';
 import { MatCheckboxModule } from '@Angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from  '@angular/material/slide-toggle';
 import { FormsModule } from '@Angular/forms';
+import { ReactiveFormsModule } from '@Angular/forms';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import 'hammerjs';
@@ -45,6 +48,7 @@ import { LeaderService } from './services/leader.service';
     BrowserAnimationsModule,
     FlexLayoutModule,
     FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatListModule,
     MatGridListModule,
@@ -54,7 +58,9 @@ import { LeaderService } from './services/leader.service';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   providers: [DishService, PromotionService, LeaderService],
   bootstrap: [AppComponent],
