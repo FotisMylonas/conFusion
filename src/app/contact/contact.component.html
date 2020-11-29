@@ -39,7 +39,7 @@
   <div fxFlex fxFlexOffset="20px">
     <h3>Send us your feedback</h3>
     <p>{{ feedbackForm.value | json }} {{ feedbackForm.status }}</p>
-    <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field class="half-width">
           <input
@@ -49,6 +49,13 @@
             type="text"
             required
           />
+          <mat-error
+            *ngIf="
+              feedbackForm.get('firstname').hasError('required') &&
+              feedbackForm.get('firstname').touched
+            "
+            >First name is required</mat-error
+          >
         </mat-form-field>
         <mat-form-field class="half-width">
           <input
@@ -58,6 +65,13 @@
             type="text"
             required
           />
+          <mat-error
+            *ngIf="
+              feedbackForm.get('lastname').hasError('required') &&
+              feedbackForm.get('lastname').touched
+            "
+            >Last name is required</mat-error
+          >
         </mat-form-field>
       </p>
       <p>
@@ -69,6 +83,13 @@
             type="tel"
             required
           />
+          <mat-error
+            *ngIf="
+              feedbackForm.get('telnum').hasError('required') &&
+              feedbackForm.get('telnum').touched
+            "
+            >Tel number is required</mat-error
+          >
         </mat-form-field>
         <mat-form-field class="half-width">
           <input
@@ -78,6 +99,13 @@
             type="email"
             required
           />
+          <mat-error
+            *ngIf="
+              feedbackForm.get('email').hasError('required') &&
+              feedbackForm.get('email').touched
+            "
+            >Email Id is required</mat-error
+          >
         </mat-form-field>
       </p>
       <table class="form-size">
@@ -105,7 +133,14 @@
           </textarea>
         </mat-form-field>
       </p>
-      <button type="submit" mat-button class="background-primary">Submit</button>
+      <button
+        type="submit"
+        mat-button
+        class="background-primary"
+        [disabled]="feedbackForm.invalid"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </div>
