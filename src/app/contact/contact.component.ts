@@ -19,30 +19,29 @@ export class ContactComponent implements OnInit {
 
   createForm() {
     this.feedbackForm = this.fb.group({
-      firstname: ['',Validators.required],
-      lastname: ['',Validators.required],
-      telnum: [0 ,Validators.required],
-      email: ['',Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      telnum: [0, Validators.required],
+      email: ['', Validators.required],
       agree: false,
       contacttype: 'None',
-      message: ''
+      message: '',
     });
   }
 
   ngOnInit(): void {}
 
-  onSubmit()
-  {
-    this.feedback=this.feedbackForm.value;
+  onSubmit() {
+    this.feedback = this.feedbackForm.value;
     console.log(this.feedback);
     this.feedbackForm.reset({
-        firstname:'',
-        lastname:'',
-        telnum:'',
-        email:'',
-        agree:false,
-        contacttype: 'None',
-        message:''
+      firstname: '',
+      lastname: '',
+      telnum: '',
+      email: '',
+      agree: false,
+      contacttype: 'None',
+      message: '',
     });
     this.feedbackFormDirective.resetForm();
   }
