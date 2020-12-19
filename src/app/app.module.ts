@@ -35,6 +35,7 @@ import { LoginComponent } from './login/login.component';
 import { PromotionService } from './services/promotion.service';
 import { DishService } from './services/dish.service';
 import { LeaderService } from './services/leader.service';
+import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 
 import { baseURL } from './shared/baseURL';
 
@@ -76,6 +77,7 @@ import { baseURL } from './shared/baseURL';
     DishService, 
     PromotionService, 
     LeaderService,
+    ProcessHTTPMsgService,
     {provide: 'BaseURL', useValue: baseURL}
   ],
   bootstrap: [AppComponent],
