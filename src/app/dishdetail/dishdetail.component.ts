@@ -16,12 +16,13 @@ import { baseURL } from '../shared/baseURL';
 })
 export class DishdetailComponent implements OnInit {
   dish: Dish;
-  errMess:string;
+  dishcopy: Dish;
+  errMess: string;
   dishIds: string[];
   prev: string;
   next: string;
 
-  feedbackForm: FormGroup;  
+  feedbackForm: FormGroup;
   @ViewChild('fform') feedbackFormDirective;
 
   formErrors = {
@@ -44,8 +45,8 @@ export class DishdetailComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    @Inject('BaseURL') private baseURL) 
-    {
+    @Inject('BaseURL') private baseURL
+  ) {
     this.createForm();
   }
 
@@ -57,10 +58,14 @@ export class DishdetailComponent implements OnInit {
       .pipe(
         switchMap((params: Params) => this.dishService.getDish(params['id']))
       )
-      .subscribe((dish) => {
-        this.dish = dish;
-        this.setPrevNext(dish.id);
-      },errmess=>this.errMess=<any>errmess);
+      .subscribe(
+        (dish) => {
+          this.dish = dish;
+          this.dishcopy = dish;
+          this.setPrevNext(dish.id);
+        },
+        (errmess) => (this.errMess = <any>errmess)
+      );
   }
 
   setPrevNext(dishId: string) {
@@ -92,14 +97,24 @@ export class DishdetailComponent implements OnInit {
   onSubmit() {
     var userComment: Comment;
     userComment = this.feedbackForm.value;
-    var d=new Date();
-    userComment.date=d.toDateString();
+    var d = new Date();
+    userComment.date = d.toDateString();
     console.log(userComment);
-    this.dish.comments.push(userComment);
+    this.dishcopy.comments.push(userComment);
+    this.dishService.putDish(this.dishcopy).subscribe(
+      (dish) => {
+        this.dish = dish;
+        this.dishcopy = dish;
+      },
+      (errmes) => {
+        (this.dish = null), (this.dishcopy = null);
+        this.errMess = <any>errmes;
+      }
+    );
     this.feedbackForm.reset({
       author: '',
-      comment: '',
       rating: 5,
+      comment: ''
     });
     this.feedbackFormDirective.resetForm();
   }

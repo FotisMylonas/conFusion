@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { DISHES } from '../shared/dishes';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { baseURL } from '../shared/baseURL';
 import { ProcessHTTPMsgService } from '../services/process-httpmsg.service';
 
@@ -13,7 +13,8 @@ import { ProcessHTTPMsgService } from '../services/process-httpmsg.service';
 export class DishService {
   constructor(
     private http: HttpClient,
-    private processHTTPMsgService: ProcessHTTPMsgService
+    private processHTTPMsgService: ProcessHTTPMsgService,
+    @Inject('BaseURL') private baseURL
   ) {}
 
   getDishes(): Observable<Dish[]> {
@@ -40,5 +41,16 @@ export class DishService {
     return this.getDishes()
       .pipe(map((dishes) => dishes.map((dish) => dish.id)))
       .pipe(catchError((error) => error));
+  }
+
+  putDish(dish: Dish): Observable<Dish> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.http
+      .put<Dish>(this.baseURL + 'Dishes/' + dish.id, dish, httpOptions)
+      .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }
