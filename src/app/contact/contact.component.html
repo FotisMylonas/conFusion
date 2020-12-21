@@ -132,4 +132,26 @@
       </button>
     </form>
   </div>
+  <div fxFlex *ngIf="feedbackPosted">    <
+    <h3>Your submission</h3>
+    <mat-list>
+      <mat-list-item>
+        <p matLine>First Name:{{ feedbackPosted.firstname }}</p>
+        <p matLine>Last Name:{{ feedbackPosted.lastname }}</p>
+        <p matLine>Tel. Number:{{ feedbackPosted.telnum }}</p>
+        <p matLine>Email:{{ feedbackPosted.email }}</p>
+        <p matLine>Contact you?:{{ feedbackPosted.agree }}</p>
+        <p matLine>How?:{{ feedbackPosted.contacttype }}</p>
+        <p matLine>Feedback:{{ feedbackPosted.message }}</p>            
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div fxFlex [hidden]="!formState">
+    <mat-spinner></mat-spinner>
+    <h3>Submitting Form . . .  Please wait!</h3>
+  </div>
+  <div fxFlex *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{ errMess }}</h4>
+  </div>
 </div>

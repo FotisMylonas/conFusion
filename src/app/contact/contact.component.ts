@@ -17,6 +17,7 @@ import { FeedbackService } from '../services/feedback.service';
 export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackPosted: Feedback;
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective;
 
@@ -48,6 +49,7 @@ export class ContactComponent implements OnInit {
     },
   };
   errMess: string;
+  formState: string;
   constructor(
     private fb: FormBuilder,
     private feedbackService: FeedbackService
@@ -110,21 +112,34 @@ export class ContactComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
+    this.formState="SUBMITTING";
     this.feedback = this.feedbackForm.value;
-    var subfeedback: Feedback = null;
-    this.feedbackService
-      .submitFeedback(this.feedback)
-      .subscribe((data) => (subfeedback = data));
-    console.log(subfeedback);
-    this.feedbackForm.reset({
-      firstname: '',
-      lastname: '',
-      telnum: '',
-      email: '',
-      agree: false,
-      contacttype: 'None',
-      message: '',
-    });
-    this.feedbackFormDirective.resetForm();
+    this.feedbackService.submitFeedback(this.feedback).subscribe(
+      (data) => {
+        this.formState=null;
+        this.feedback = data;
+        this.feedbackPosted = data;
+        console.log(this.feedbackPosted);
+        setTimeout(() => {
+          this.feedbackForm.reset({
+            firstname: '',
+            lastname: '',
+            telnum: '',
+            email: '',
+            agree: false,
+            contacttype: 'None',
+            message: '',
+          });
+          this.feedbackPosted = null;
+          this.feedbackFormDirective.resetForm();
+        }, 5000);
+      },
+      (errmes) => {
+        this.feedbackPosted = null;
+        this.feedback = null;
+        this.formState=null;
+        this.errMess = <any>errmes;
+      }
+    );
   }
 }
