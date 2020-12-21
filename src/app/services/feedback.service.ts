@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Promotion } from '../shared/promotion';
+import { Feedback } from '../shared/feedback';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -9,30 +9,29 @@ import { ProcessHTTPMsgService } from '../services/process-httpmsg.service';
 @Injectable({
   providedIn: 'root',
 })
-export class PromotionService {
-  urlSubfolder: string = 'promotions';
+export class FeedbackService {
+  urlSubfolder: string = 'feedback';
+
   constructor(
     private http: HttpClient,
     private processHTTPMsgService: ProcessHTTPMsgService,
     @Inject('BaseURL') private baseURL
   ) {}
 
-  getPromotions(): Observable<Promotion[]> {
+  getFeedbacks(): Observable<Feedback[]> {
     return this.http
-      .get<Promotion[]>(baseURL + this.urlSubfolder)
+      .get<Feedback[]>(baseURL + this.urlSubfolder)
       .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
-  getPromotion(id: string): Observable<Promotion> {
+  submitFeedback(feedback: Feedback): Observable<Feedback> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
     return this.http
-      .get<Promotion>(baseURL + this.urlSubfolder + '/' + id)
-      .pipe(catchError(this.processHTTPMsgService.handleError));
-  }
-
-  getFeaturedPromotion(): Observable<Promotion> {
-    return this.http
-      .get<Promotion>(baseURL + this.urlSubfolder + '?featured=true')
-      .pipe(map((dishes) => dishes[0]))
+      .post<Feedback>(this.baseURL + this.urlSubfolder, feedback, httpOptions)
       .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }

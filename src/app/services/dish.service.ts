@@ -50,7 +50,7 @@ export class DishService {
       }),
     };
     return this.http
-      .put<Dish>(this.baseURL + 'Dishes/' + dish.id, dish, httpOptions)
+      .put<Dish>(this.baseURL + 'dishes/' + dish.id, dish, httpOptions)
       .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }
