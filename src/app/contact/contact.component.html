@@ -37,16 +37,30 @@
     </div>
   </div>
 
- <!-- <div fxFlex [@visibility]="visibility">
-    <h1>your feedback</h1>
-    <mat-list>
-      <mat-list-item >
-        <p matLine>{{ firstname }}</p>
-        <p matLine>{{ lastname }}</p>
-        <p matLine>{{ telnum }}</p>
-      </mat-list-item>
-    </mat-list>
-  </div>-->
+  <div fxFlex [@visibility]="visibility">
+    <div fxFlex *ngIf="feedbackPosted">
+      <h3>Your submission</h3>
+      <mat-list>
+        <mat-list-item>
+          <p matLine>First Name:{{ feedbackPosted.firstname }}</p>
+          <p matLine>Last Name:{{ feedbackPosted.lastname }}</p>
+          <p matLine>Tel. Number:{{ feedbackPosted.telnum }}</p>
+          <p matLine>Email:{{ feedbackPosted.email }}</p>
+          <p matLine>Contact you?:{{ feedbackPosted.agree }}</p>
+          <p matLine>How?:{{ feedbackPosted.contacttype }}</p>
+          <p matLine>Feedback:{{ feedbackPosted.message }}</p>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div fxFlex [hidden]="!formState">
+      <mat-spinner></mat-spinner>
+      <h3>Submitting Form . . . Please wait!</h3>
+    </div>
+    <div fxFlex *ngIf="errMess">
+      <h2>Error</h2>
+      <h4>{{ errMess }}</h4>
+    </div>
+  </div>
 
   <div fxFlex fxFlexOffset="20px">
     <h3>Send us your feedback</h3>
@@ -145,5 +159,3 @@
     </form>
   </div>
 </div>
-
-
