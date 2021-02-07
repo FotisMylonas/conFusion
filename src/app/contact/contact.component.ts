@@ -17,6 +17,7 @@ import { FeedbackService } from '../services/feedback.service';
 export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
+  submitedfeedback: Feedback;
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective;
 
@@ -111,11 +112,17 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    var subfeedback: Feedback = null;
-    this.feedbackService
-      .submitFeedback(this.feedback)
-      .subscribe((data) => (subfeedback = data));
-    console.log(subfeedback);
+    this.feedbackService.submitFeedback(this.feedback).subscribe(
+      (data) => {
+        this.submitedfeedback = data;
+        this.submitedfeedback = data;
+      },
+      (errmes) => {
+        (this.submitedfeedback = null), (this.submitedfeedback = null);
+        this.errMess = <any>errmes;
+      }
+    );
+    console.log(this.submitedfeedback);
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
