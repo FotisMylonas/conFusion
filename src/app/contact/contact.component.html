@@ -37,7 +37,16 @@
     </div>
   </div>
 
-  <div fxFlex [@visibility]="visibility">
+  <div fxFlex [hidden]="hideSpinner">
+    <mat-spinner></mat-spinner>
+    <h3>Submitting Form . . . Please wait!</h3>
+  </div>
+  <div fxFlex *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{ errMess }}</h4>
+  </div>
+
+  <div fxFlex [@visibility]="confirmationVisibility">
     <div fxFlex *ngIf="feedbackPosted">
       <h3>Your submission</h3>
       <mat-list>
@@ -52,17 +61,9 @@
         </mat-list-item>
       </mat-list>
     </div>
-    <div fxFlex [hidden]="!formState">
-      <mat-spinner></mat-spinner>
-      <h3>Submitting Form . . . Please wait!</h3>
-    </div>
-    <div fxFlex *ngIf="errMess">
-      <h2>Error</h2>
-      <h4>{{ errMess }}</h4>
-    </div>
   </div>
 
-  <div fxFlex fxFlexOffset="20px">
+  <div fxFlex fxFlexOffset="20px" [@visibility]="feedbackformVisibility">
     <h3>Send us your feedback</h3>
     <p>{{ feedbackForm.value | json }} {{ feedbackForm.status }}</p>
     <form

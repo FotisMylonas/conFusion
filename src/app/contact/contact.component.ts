@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut, expand } from '../animations/app.animation';
+import { visibility, flyInOut, expand } from '../animations/app.animation';
 import { FeedbackService } from '../services/feedback.service';
 
 @Component({
@@ -12,13 +12,16 @@ import { FeedbackService } from '../services/feedback.service';
     '[@flyInOut]': 'true',
     style: 'display: block;',
   },
-  animations: [flyInOut(), expand()],
+  animations: [visibility(), flyInOut(), expand()],
 })
 export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   feedbackPosted: Feedback;
   contactType = ContactType;
+  confirmationVisibility;
+  feedbackformVisibility;
+  hideSpinner: boolean;
   @ViewChild('fform') feedbackFormDirective;
 
   formErrors = {
@@ -49,12 +52,12 @@ export class ContactComponent implements OnInit {
     },
   };
   errMess: string;
-  formState: string;
   constructor(
     private fb: FormBuilder,
     private feedbackService: FeedbackService
   ) {
     this.createForm();
+    this.setFormState('FEEDBACK');
   }
 
   createForm(): void {
@@ -84,7 +87,7 @@ export class ContactComponent implements OnInit {
     this.feedbackForm.valueChanges.subscribe((data) =>
       this.onValueChanged(data)
     );
-    this.onValueChanged(); //reset fprm validation
+    this.onValueChanged(); //reset form validation
   }
 
   onValueChanged(data?: any) {
@@ -111,16 +114,38 @@ export class ContactComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  setFormState(formState: string) {
+    if (formState == 'FEEDBACK') {
+      this.feedbackPosted = null;
+      this.hideSpinner = true;
+      this.feedbackformVisibility = 'shown';
+      this.confirmationVisibility = 'hidden';
+    } else if (formState == 'CONFIRMATION') {
+      this.hideSpinner = true;
+      this.feedbackformVisibility = 'hidden';
+      this.confirmationVisibility = 'shown';
+    } else if (formState == 'WAITING') {
+      this.feedbackPosted = null;
+      this.hideSpinner = false;
+      this.feedbackformVisibility = 'shown';
+      this.confirmationVisibility = 'hidden';
+    }
+  }
+
   onSubmit() {
-    this.formState="SUBMITTING";
+    this.setFormState('WAITING');
     this.feedback = this.feedbackForm.value;
     this.feedbackService.submitFeedback(this.feedback).subscribe(
       (data) => {
         this.feedbackPosted = data;
+        this.setFormState('CONFIRMATION');
+        setTimeout(() => {
+          this.setFormState('FEEDBACK');
+        }, 5000);
       },
       (errmes) => {
-        (this.feedbackPosted = null), (this.feedbackPosted = null);
         this.errMess = <any>errmes;
+        this.setFormState('FEEDBACK');
       }
     );
     console.log(this.feedbackPosted);
@@ -135,3 +160,4 @@ export class ContactComponent implements OnInit {
     });
     this.feedbackFormDirective.resetForm();
   }
+}
