@@ -127,7 +127,7 @@ export class ContactComponent implements OnInit {
     } else if (formState == 'WAITING') {
       this.feedbackPosted = null;
       this.hideSpinner = false;
-      this.feedbackformVisibility = 'shown';
+      this.feedbackformVisibility = 'hidden';
       this.confirmationVisibility = 'hidden';
     }
   }
