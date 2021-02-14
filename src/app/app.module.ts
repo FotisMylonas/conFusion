@@ -38,7 +38,7 @@ import { LeaderService } from './services/leader.service';
 import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { FeedbackService } from './services/feedback.service';
 
-import { baseURL } from './shared/baseURL';
+import { baseURL } from './shared/baseurl';
 import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({

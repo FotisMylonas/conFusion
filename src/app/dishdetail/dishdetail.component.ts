@@ -7,7 +7,7 @@ import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
 import { switchMap } from 'rxjs/operators';
 import { Comment } from '../shared/comment';
-import { baseURL } from '../shared/baseURL';
+import { baseURL } from '../shared/baseurl';
 import { visibility, flyInOut, expand } from '../animations/app.animation';
 
 @Component({
